@@ -1,0 +1,48 @@
+#
+#  Makefile.nt
+#  
+#  Copyright (C) 1998
+#  Paul E. Jones <paulej@arid.us>
+#  All Rights Reserved.
+#
+#############################################################################
+#  $Id: Makefile.nt,v 1.3 2004/03/27 18:02:06 paulej Exp $
+#############################################################################
+#
+#  Description:
+#	This is a makefile for Win32 to build the programs sha, shacmp, and
+#	shatest
+#
+#  Portability Issues:
+#	Designed to work with Visual C++
+#
+#
+
+.silent:
+
+!include <win32.mak>
+
+RM			= del /q
+
+LIBS		= $(conlibs) setargv.obj libcp.lib
+
+CFLAGS		= /GX /ML
+
+OBJS		= sha1.obj
+
+all: sha.exe shacmp.exe shatest.exe
+
+sha.exe: sha.obj $(OBJS)
+	$(link) $(conflags) -out:$@ sha.obj $(OBJS) $(LIBS)
+
+shacmp.exe: shacmp.obj $(OBJS)
+	$(link) $(conflags) -out:$@ shacmp.obj $(OBJS) $(LIBS)
+
+shatest.exe: shatest.obj $(OBJS)
+	$(link) $(conflags) -out:$@ shatest.obj $(OBJS) $(LIBS)
+
+.cpp.obj:
+	$(cc) $(CFLAGS) $(cflags) $(cvars) $<
+
+clean:
+	$(RM) *.obj sha.exe shacmp.exe shatest.exe
